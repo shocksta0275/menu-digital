@@ -1,14 +1,16 @@
-// ---------------------
+// ----------------------------
 // URL CSV publicado
 const sheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLt9xWlULnMP50kZ3MniL6eVxfFayhDmvXQaBUhe_tvWuvcOrn5TLilupN3lvJaU0gXvg-EAt1sv4v/pub?output=csv";
 
 // Contenedor donde se renderizan los items
 const listContainer = document.getElementById("list");
+const dropdown = document.getElementById("categoria-dropdown");
 
 // Variables globales
 let menuData = [];
+let tabs;
 
-// ---------------------
+// ----------------------------
 // Cargar CSV con PapaParse
 function loadCSV() {
   Papa.parse(sheetCSV, {
@@ -17,18 +19,18 @@ function loadCSV() {
     skipEmptyLines: true,
     complete: function(results) {
       menuData = results.data.map(item => {
-        item.categoria = item.categoria?.toLowerCase().trim() || "";
-        item.subCategoria = item.sub_categoria?.toLowerCase().trim() || "";
+        item.categoria = (item.categoria || "").toLowerCase().trim();
+        item.subCategoria = (item.sub_categoria || "").toLowerCase().trim();
         item.orden = parseInt(item.orden) || 999;
-        item.imagen = item.imagen?.trim() || "";
-        item.precio = item.precio?.trim() || "";
-        item.precio_2 = item.precio_2?.trim() || "";
-        item.nota = item.nota?.trim() || "";
-        item.ingredientes = item.ingredientes?.trim() || "";
-        item.do = item.do?.trim() || "";
-        item.uva = item.uva?.trim() || "";
-        item.crianza = item.crianza?.trim() || "";
-        item.maridaje = item.maridaje?.trim() || "";
+        item.imagen = (item.imagen || "").trim();
+        item.precio = (item.precio || "").trim();
+        item.precio_2 = (item.precio_2 || "").trim();
+        item.nota = (item.nota || "").trim();
+        item.ingredientes = (item.ingredientes || "").trim();
+        item.do = (item.do || "").trim();
+        item.uva = (item.uva || "").trim();
+        item.crianza = (item.crianza || "").trim();
+        item.maridaje = (item.maridaje || "").trim();
         return item;
       });
 
@@ -43,36 +45,29 @@ function loadCSV() {
   });
 }
 
-// ---------------------
+// ----------------------------
 // Inicializar tabs
-let tabs;
 function initTabs() {
   tabs = document.querySelectorAll(".tab");
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
-      // Remover active de todos
       tabs.forEach(t => t.classList.remove("active"));
-      // Activar el clickeado
       tab.classList.add("active");
 
-      // Renderizar categoría del tab
-      const cat = tab.dataset.cat;
-      renderCategoria(cat);
+      renderCategoria(tab.dataset.cat);
 
       // Reset dropdown
-      const dropdown = document.getElementById("categoria-dropdown");
       if (dropdown) dropdown.value = "";
     });
   });
 }
 
-// ---------------------
-// Construir dropdown colapsable
+// ----------------------------
+// Construir dropdown colapsable con categorías y subcategorías
 function buildDropdown() {
-  const dropdown = document.getElementById("categoria-dropdown");
   dropdown.innerHTML = `<option value="">Todas las subcategorías</option>`;
 
-  // Agrupar subcategorías por categoría y obtener orden mínimo
+  // Agrupar subcategorías por categoría y calcular orden mínimo
   const catMap = {};
   menuData.forEach(item => {
     const cat = item.categoria || "sin_categoria";
@@ -83,12 +78,12 @@ function buildDropdown() {
     else catMap[cat][sub] = Math.min(catMap[cat][sub], item.orden);
   });
 
-  // Construir optgroups
+  // Crear optgroups
   Object.keys(catMap).forEach(cat => {
     const optGroup = document.createElement("optgroup");
     optGroup.label = capitalize(cat);
 
-    // Ordenar subcategorías por orden mínimo
+    // Ordenar subcategorías
     const subOrdenadas = Object.keys(catMap[cat]).sort((a, b) => catMap[cat][a] - catMap[cat][b]);
     subOrdenadas.forEach(sub => {
       const opt = document.createElement("option");
@@ -100,29 +95,33 @@ function buildDropdown() {
     dropdown.appendChild(optGroup);
   });
 
-  // Listener para filtrar al seleccionar
+  // Listener cambio dropdown
   dropdown.addEventListener("change", () => {
     const val = dropdown.value;
-    if (val === "") {
-      const activeTab = document.querySelector(".tab.active")?.dataset.cat;
-      renderCategoria(activeTab || "");
+
+    if (!val) {
+      renderCategoria(getActiveTab());
     } else {
+      // Cambiar al tab correspondiente si es diferente
       const item = menuData.find(i => i.subCategoria === val);
-      if (item) {
-        const tabActual = document.querySelector(".tab.active")?.dataset.cat;
-        if (item.categoria !== tabActual) {
-          // Cambiar tab automáticamente
-          tabs.forEach(t => t.classList.remove("active"));
-          const nuevoTab = Array.from(tabs).find(t => t.dataset.cat === item.categoria);
-          if (nuevoTab) nuevoTab.classList.add("active");
-        }
+      if (item && item.categoria !== getActiveTab()) {
+        tabs.forEach(t => t.classList.remove("active"));
+        const newTab = Array.from(tabs).find(t => t.dataset.cat === item.categoria);
+        if (newTab) newTab.classList.add("active");
       }
-      renderCategoriaDropdown(val);
+      renderSubCategoria(val);
     }
   });
 }
 
-// ---------------------
+// ----------------------------
+// Obtener tab activo
+function getActiveTab() {
+  const active = document.querySelector(".tab.active");
+  return active ? active.dataset.cat : tabs[0].dataset.cat;
+}
+
+// ----------------------------
 // Renderizar por categoría
 function renderCategoria(categoria) {
   const filtered = menuData
@@ -134,9 +133,9 @@ function renderCategoria(categoria) {
     : "<p>No hay items en esta categoría.</p>";
 }
 
-// ---------------------
+// ----------------------------
 // Renderizar por subcategoría
-function renderCategoriaDropdown(subCategoria) {
+function renderSubCategoria(subCategoria) {
   const filtered = menuData
     .filter(i => i.subCategoria === subCategoria)
     .sort((a, b) => a.orden - b.orden);
@@ -146,8 +145,8 @@ function renderCategoriaDropdown(subCategoria) {
     : "<p>No hay items en esta subcategoría.</p>";
 }
 
-// ---------------------
-// Renderizar un item
+// ----------------------------
+// Renderizar un item individual
 function renderItem(item) {
   const mostrarImagen = item.imagen && item.imagen !== "";
 
@@ -178,7 +177,7 @@ function renderItem(item) {
   }
 }
 
-// ---------------------
+// ----------------------------
 // Lightbox
 function abrirLightbox(src) {
   const lb = document.createElement("div");
@@ -188,12 +187,12 @@ function abrirLightbox(src) {
   document.body.appendChild(lb);
 }
 
-// ---------------------
-// Capitalizar
+// ----------------------------
+// Capitalizar texto
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// ---------------------
+// ----------------------------
 // Inicializar
 loadCSV();
