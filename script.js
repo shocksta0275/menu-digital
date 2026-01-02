@@ -1,3 +1,4 @@
+document.getElementById("debug").innerText = "JS CARGADO";
 // ---------------------
 // URL CSV publicado
 const sheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLt9xWlULnMP50kZ3MniL6eVxfFayhDmvXQaBUhe_tvWuvcOrn5TLilupN3lvJaU0gXvg-EAt1sv4v/pub?output=csv";
