@@ -1,4 +1,3 @@
-document.getElementById("debug").innerText = "JS CARGADO";
 
 // ---------------------
 // URL CSV publicado
