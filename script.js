@@ -1,3 +1,9 @@
+const listContainer = document.getElementById("list");
+if (!listContainer) throw new Error("No se encontró #list en el DOM");
+
+const dropdown = document.getElementById("categoria-dropdown");
+if (!dropdown) throw new Error("No se encontró #categoria-dropdown en el DOM");
+
 // ---------------------
 // URL CSV publicado
 const sheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLt9xWlULnMP50kZ3MniL6eVxfFayhDmvXQaBUhe_tvWuvcOrn5TLilupN3lvJaU0gXvg-EAt1sv4v/pub?output=csv";
