@@ -196,4 +196,5 @@ function capitalize(str) {
 
 // ---------------------
 // Inicializar
+console.log("SCRIPT CARGADO");
 loadCSV();
