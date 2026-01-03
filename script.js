@@ -65,7 +65,7 @@ function initTabs() {
 // ----------------------------
 // Construir dropdown colapsable con categorías y subcategorías
 function buildDropdown() {
-  dropdown.innerHTML = `<option value="">Todas las subcategorías</option>`;
+  dropdown.innerHTML = `<option value="">Explorar menú...</option>`;
 
   // Agrupar subcategorías por categoría y calcular orden mínimo
   const catMap = {};
@@ -124,13 +124,34 @@ function getActiveTab() {
 // ----------------------------
 // Renderizar por categoría
 function renderCategoria(categoria) {
+  // Filtrar items de la categoría seleccionada
   const filtered = menuData
     .filter(i => i.categoria === categoria)
     .sort((a, b) => a.orden - b.orden);
 
-  listContainer.innerHTML = filtered.length
-    ? filtered.map(renderItem).join("")
-    : "<p>No hay items en esta categoría.</p>";
+  if (!filtered.length) {
+    listContainer.innerHTML = "<p>No hay items en esta categoría.</p>";
+    return;
+  }
+
+  // Agrupar por subCategoria
+  const grupos = {};
+  filtered.forEach(item => {
+    const sub = item.subCategoria || "sin_subcategoría";
+    if (!grupos[sub]) grupos[sub] = [];
+    grupos[sub].push(item);
+  });
+
+  // Construir HTML por grupos
+  let html = "";
+  Object.keys(grupos).forEach(sub => {
+    html += `<h2 class="subcategoria-titulo">${capitalize(sub)}</h2>`;
+    grupos[sub].forEach(item => {
+      html += renderItem(item);
+    });
+  });
+
+  listContainer.innerHTML = html;
 }
 
 // ----------------------------
