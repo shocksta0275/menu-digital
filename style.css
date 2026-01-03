@@ -48,8 +48,7 @@ body {
   text-align: center;
   font-family: "Brush Script MT", cursive;
   font-size: 4rem;
-  /*color:#d92e2b;*/
-  color: #000000;
+  color:#d92e2b;
 }
 /* Tabs */
 .tabs {
@@ -160,4 +159,5 @@ h2.subcategoria-titulo {
 }
 .categ{
   font-size: .75rem;
+  color: #000000
   }
