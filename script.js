@@ -145,7 +145,7 @@ function renderCategoria(categoria) {
   // Construir HTML por grupos
   let html = "";
   Object.keys(grupos).forEach(sub => {
-    html += `<h2 class="subcategoria-titulo">${capitalize(sub)}</h2>`;
+    html += `<span class="categ">CATEGORIA:</span><h2 class="subcategoria-titulo">${capitalize(sub)}</h2>`;
     grupos[sub].forEach(item => {
       html += renderItem(item);
     });
