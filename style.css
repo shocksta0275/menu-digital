@@ -48,7 +48,8 @@ body {
   text-align: center;
   font-family: "Brush Script MT", cursive;
   font-size: 4rem;
-  color:#d92e2b;
+  /*color:#d92e2b;*/
+  color: #000000;
 }
 /* Tabs */
 .tabs {
