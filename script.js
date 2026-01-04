@@ -24,7 +24,12 @@ function loadCSV() {
         item.orden = parseInt(item.orden) || 999;
         item.imagen = (item.imagen || "").trim();
         item.precio = (item.precio || "").trim();
-        item.precio_2 = (item.precio_2 || "").trim();
+        if (item.precio !== "") {
+          item.precio = parseFloat(item.precio).toFixed(2);
+        }
+        item.precio_2 = (item.precio_2 || "").trim(); 
+        if (item.precio_2 !== "") {
+         item.precio_2 = parseFloat(item.precio_2).toFixed(2); }
         item.nota = (item.nota || "").trim();
         item.ingredientes = (item.ingredientes || "").trim();
         item.do = (item.do || "").trim();
@@ -137,7 +142,8 @@ function renderCategoria(categoria) {
   // Agrupar por subCategoria
   const grupos = {};
   filtered.forEach(item => {
-    const sub = item.subCategoria || "sin_subcategoría";
+    // "sin_subcategoria"
+    const sub = item.subCategoria || " ";
     if (!grupos[sub]) grupos[sub] = [];
     grupos[sub].push(item);
   });
@@ -145,10 +151,12 @@ function renderCategoria(categoria) {
   // Construir HTML por grupos
   let html = "";
   Object.keys(grupos).forEach(sub => {
-    html += `<span class="categ">CATEGORIA:</span><h2 class="subcategoria-titulo">${capitalize(sub)}</h2>`;
+    html += `<h2 class="subcategoria-titulo">${capitalize(sub)}</h2>`;
     grupos[sub].forEach(item => {
       html += renderItem(item);
+      
     });
+    html += `<hr class="linea4">`;
   });
 
   listContainer.innerHTML = html;
@@ -173,19 +181,37 @@ function renderItem(item) {
 
   if (mostrarImagen) {
     return `
-      <div class="item-con-imagen">
-        <img src="${item.imagen}" alt="${item.nombre}" onclick="abrirLightbox('${item.imagen}')">
-        <div class="info">
-          <h3>${item.nombre}</h3>
-          <p>${item.precio}${item.precio_2 ? ' | ' + item.precio_2 : ''}</p>
-          ${item.nota ? `<small>${item.nota}</small>` : ''}
-          ${item.ingredientes ? `<p>${item.ingredientes}</p>` : ''}
-          ${item.do ? `<p><i>D.O.: ${item.do}</i></p>` : ''}
-          ${item.uva ? `<p><i>Uva: ${item.uva}</i></p>` : ''}
-          ${item.crianza ? `<p><i>Crianza: ${item.crianza}</i></p>` : ''}
-          ${item.maridaje ? `<p><i>Maridaje: ${item.maridaje}</i></p>` : ''}
+      <div class="item-con-imagen layout">
+        <div class="col-izq">
+          <img src="${item.imagen}" alt="${item.nombre}" onclick="abrirLightbox('${item.imagen}')">
+        </div>
+      
+        <div class="col-der detalle">
+          <div class="fila"><h3>${item.nombre}</h3></div>
+          <div class="fila">
+          ${item.ingredientes ? `<small><b>INGREDIENTES:</b><p>${item.ingredientes}</p></small>` : ''}
+          ${item.do ? `<p>D.O.: ${item.do}</p>` : ''}
+          ${item.uva ? `<p>Uva: ${item.uva}</p>` : ''}
+          ${item.crianza ? `<p>Crianza: ${item.crianza}</p>` : ''}
+          ${item.maridaje ? `<p>Maridaje: ${item.maridaje}</p>` : ''}
+          </div>
+          
+          <div class="fila fila-doble">
+            <div class="col-50">
+            </div>
+            <div class="col-50 precio d"><b>B/. <span class="rojo">${item.precio}</span></b> </div>
+          </div>
+          
         </div>
       </div>
+      <div class="fila fila-doble">
+            <div class="col-50">
+            ${item.nota ? `<small><b>NOTA:</b> ${item.nota}</small>` : ''}
+            </div>
+            <div class="col-50 d"> 
+              ${item.precio_2 ? `<small>Precio regular: <span class="tachado"> ${item.precio_2}</span></small>` : ''}</div>
+          </div>
+          
     `;
   } else {
     return `
