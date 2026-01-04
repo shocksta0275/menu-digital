@@ -40,7 +40,7 @@ body {
 }
 .menutitulo{
   text-align: center;
-  font-family: Menutitulo, cursive;
+  font-family: Pacifico, cursive;
   font-size: 4rem;
   color:#d92e2b;
 }
@@ -146,7 +146,7 @@ body {
   border-radius: 0px;
 }
 h2.subcategoria-titulo {
-  font-family: 'Pacifico', cursiva;
+  font-family: 'Dancin Script', cursiva;
   font-size: 3rem;
   line-height: 2rem;
   padding-top: 15px;
