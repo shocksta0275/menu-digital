@@ -10,12 +10,6 @@ p, span {
   font-weight: normal;
   font-style: normal;
 }
-@font-face {
-  font-family: 'Menutitulo';
-  src: url('Allison-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 body {
   font-family: Arial, sans-serif;
   margin: 15px;
@@ -40,7 +34,7 @@ body {
 }
 .menutitulo{
   text-align: center;
-  font-family: Pacifico, cursive;
+  font-family: 'Pacifico', cursive;
   font-size: 4rem;
   color:#d92e2b;
 }
