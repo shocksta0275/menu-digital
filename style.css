@@ -11,12 +11,6 @@ p, span {
   font-style: normal;
 }
 @font-face {
-  font-family: 'RecoletaFont';
-  src: url('Recoleta-Regular-DEMO.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: 'Menutitulo';
   src: url('Allison-Regular.ttf') format('truetype');
   font-weight: normal;
@@ -25,7 +19,7 @@ p, span {
 body {
   font-family: Arial, sans-serif;
   margin: 15px;
-  background-image: url('img/bg.jpg');
+  background-image: url('/img/bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -46,7 +40,7 @@ body {
 }
 .menutitulo{
   text-align: center;
-  font-family: Menutitulo, cursive;
+  font-family: "lucida handwriting", cursive;
   font-size: 4rem;
   color:#d92e2b;
 }
@@ -92,11 +86,10 @@ body {
 /* Item con imagen */
 .item-con-imagen {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   margin-top: 10px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #76272c;
-  padding-bottom: 10px;
+  border-top: 1px solid #76272c;
+  padding-top: 10px;
 }
 
 .item-con-imagen img {
@@ -119,9 +112,9 @@ body {
 /* Item sin imagen (lista simple) */
 .item-sin-imagen {
   margin-top: 10px;
-  margin-bottom: 15px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #76272c;
+  margin-bottom: 10px;
+  border-top: 1px solid #76272c;
+  padding-top: 10px;
 }
 
 .item-sin-imagen h3 {
@@ -140,7 +133,7 @@ body {
   left:0;
   width:100%;
   height:100%;
-  background: rgba(118,39,44,1);
+  background: rgba(118,39,44,0.9);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -153,11 +146,66 @@ body {
   border-radius: 0px;
 }
 h2.subcategoria-titulo {
-  font-family: Georgia, "Times New Roman", sans-serif;
-  font-size: 1.5rem;
-  border-bottom: 2px #76272c solid;
+  font-family: Menutitulo, sans-serif;
+  font-size: 3rem;
+  line-height: 2rem;
+  padding-top: 15px;
+  /*border-bottom: 2px #76272c solid;*/
 }
-.categ{
-  font-size: .75rem;
-  color: #000000
+.detalle{
+  font-size: 1rem;
+}
+.detalle h3{
+  font-size: 1.25rem;
+  color: #76272c;
+  font-weight: bold;
+}
+hr.linea4{
+  border: none;
+  height: 4px;
+  background-color: #76272c;
+}
+.layout {
+  display: flex;
+  width: 100%;
+}
+.col-izq {
+  flex: 1;
+}
+.col-der {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+.fila {
+  width: 100%;
+}
+.fila-doble {
+  display: flex;
+  margin-top: auto;
+}
+.col-50 {
+  flex: 0 0 50%;
+}
+.precio{
+  font-family: "Times New Roman", Sans-Serif;
+  font-size: 1.5rem;
+}
+.rojo{
+  color: #d92e2b;
+  font-weight: bold;
+}
+.d {text-align: right;}
+.tachado {
+  position: relative;
+}
+
+.tachado::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: red;
   }
