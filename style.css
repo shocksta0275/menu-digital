@@ -150,9 +150,10 @@ h2.subcategoria-titulo {
   /*border-bottom: 2px #76272c solid;*/
 }
 .detalle h3{
+  font-family: "Times New Roman", Sans-Serif;
   font-size: 1.25rem;
   color: #76272c;
-  font-weight: bold;
+  font-weight: normal;
   line-height: normal;
 }
 hr.linea4{
@@ -205,4 +206,4 @@ h4{
   width: 100%;
   height: 2px;
   background: red;
-}
+  }
