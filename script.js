@@ -19,8 +19,8 @@ function loadCSV() {
     skipEmptyLines: true,
     complete: function(results) {
       menuData = results.data.map(item => {
-        item.categoria = (item.categoria || "").toLowerCase().trim();
-        item.subCategoria = (item.sub_categoria || "").toLowerCase().trim();
+        item.categoria = (item.categoria || "").trim();
+        item.subCategoria = (item.sub_categoria || "").trim();
         item.orden = parseInt(item.orden) || 999;
         item.imagen = (item.imagen || "").trim();
         item.precio = (item.precio || "").trim();
@@ -30,6 +30,12 @@ function loadCSV() {
         item.precio_2 = (item.precio_2 || "").trim(); 
         if (item.precio_2 !== "") {
          item.precio_2 = parseFloat(item.precio_2).toFixed(2); }
+        item.trago = (item.trago || "").trim(); 
+        if (item.trago !== "") {
+         item.trago = parseFloat(item.trago).toFixed(2); }
+        item.botella = (item.botella || "").trim(); 
+        if (item.botella !== "") {
+         item.botella = parseFloat(item.botella).toFixed(2); }
         item.nota = (item.nota || "").trim();
         item.ingredientes = (item.ingredientes || "").trim();
         item.do = (item.do || "").trim();
@@ -169,17 +175,30 @@ function renderSubCategoria(subCategoria) {
     .filter(i => i.subCategoria === subCategoria)
     .sort((a, b) => a.orden - b.orden);
 
-  listContainer.innerHTML = filtered.length
-    ? filtered.map(renderItem).join("")
-    : "<p>No hay items en esta subcategoría.</p>";
+  if (!filtered.length) {
+    listContainer.innerHTML = "<p>No hay items en esta subcategoría.</p>";
+    return;
+  }
+
+  let html = `<h2 class="subcategoria-titulo">${capitalize(subCategoria)}</h2>`;
+
+  filtered.forEach(item => {
+    html += renderItem(item);
+  });
+
+  listContainer.innerHTML = html;
 }
 
 // ----------------------------
 // Renderizar un item individual
 function renderItem(item) {
-  const mostrarImagen = item.imagen && item.imagen !== "";
+  const tieneImagen = Boolean(item.imagen);
+  const sub_categoria = item.sub_categoria;
+  
+  const bebidasList = ["Ginebra", "Vodka", "Ron", "Seco", "Tequila", "Whisky"];
 
-  if (mostrarImagen) {
+  if (bebidasList.includes(sub_categoria) && tieneImagen) 
+  {
     return `
       <div class="item-con-imagen layout">
         <div class="col-izq">
@@ -187,42 +206,110 @@ function renderItem(item) {
         </div>
       
         <div class="col-der detalle">
-          <div class="fila"><h3>${item.nombre}</h3></div>
-          <div class="fila">
-          ${item.ingredientes ? `<small><b>INGREDIENTES:</b><p>${item.ingredientes}</p></small>` : ''}
-          ${item.do ? `<p>D.O.: ${item.do}</p>` : ''}
-          ${item.uva ? `<p>Uva: ${item.uva}</p>` : ''}
-          ${item.crianza ? `<p>Crianza: ${item.crianza}</p>` : ''}
-          ${item.maridaje ? `<p>Maridaje: ${item.maridaje}</p>` : ''}
+          <div class="fila"><h3>${item.nombre}</h3>
+          ${item.ingredientes ? `${item.ingredientes}` : ''}
           </div>
-          
-          <div class="fila fila-doble">
-            <div class="col-50">
+          <div class="fila-doble">
+            <div class="col-50 precio">
+            <b>Trago: <h4>${item.trago}</h4></b>
             </div>
-            <div class="col-50 precio d"><b>B/. <span class="rojo">${item.precio}</span></b> </div>
+            <div class="col-50 precio d"><b>
+            Botella: <h4>${item.botella}</h4></b>
+            </div>
           </div>
-          
+          <div class="fila-doble">
+            <div class="col-50">
+            ${item.nota ? `${item.nota}` : ''}
+            </div>
+            <div class="col-50 d"> 
+              ${item.precio_2 ? `Precio regular: <span class="tachado"> ${item.precio_2}</span>` : ''}</div>
+            </div>
+          </div>
+        </div>`;
+  } 
+  
+  else if (bebidasList.includes(sub_categoria)) {
+    return `<div class="item-sin-imagen detalle col-der">
+          <div class="fila"><h3>${item.nombre}</h3>
+          ${item.ingredientes ? `${item.ingredientes}</p>` : ''}
+          </div>
+          <div class="fila fila-doble">
+            <div class="col-50 precio d">
+            <b>Trago: <h4>${item.trago}</h4></b>
+            </div>
+            <div class="col-50 precio d"><b>
+            Botella: <h4>${item.botella}</h4></b>
+            </div>
+          </div>
+        </div>
+        <div class="fila fila-doble">
+            <div class="col-50">
+            ${item.nota ? `${item.nota}` : ''}
+            </div>
+            <div class="col-50 d"> 
+              ${item.precio_2 ? `Precio regular: <span class="tachado"> ${item.precio_2}</span>` : ''}</div>
+          </div>`;
+  }
+  else if (tieneImagen) {
+    return `
+    <div class="item-con-imagen layout">
+        <div class="col-izq">
+          <img src="${item.imagen}" alt="${item.nombre}" onclick="abrirLightbox('${item.imagen}')">
+        </div>
+      
+        <div class="col-der detalle">
+          <div class="fila"><h3>${item.nombre}</h3>
+          ${item.ingredientes ? `${item.ingredientes}` : ''}
+          ${item.do ? `<p><b>D.O.:</b> ${item.do}</p>` : ''}
+          ${item.uva ? `<p><b>Uva:</b> ${item.uva}</p>` : ''}
+          ${item.crianza ? `<p><b>Crianza:</b> ${item.crianza}</p>` : ''}
+          ${item.maridaje ? `<p><b>Maridaje:</b> ${item.maridaje}</p>` : ''}
+          </div>
+          <div class="fila fila-doble">
+            <div class="col-50"></div>
+            <div class="col-50 precio d"><b>B/. <h4>${item.precio}</h4></b> </div>
+          </div>
         </div>
       </div>
       <div class="fila fila-doble">
             <div class="col-50">
-            ${item.nota ? `<small><b>NOTA:</b> ${item.nota}</small>` : ''}
+            ${item.nota ? `${item.nota}` : ''}
             </div>
             <div class="col-50 d"> 
-              ${item.precio_2 ? `<small>Precio regular: <span class="tachado"> ${item.precio_2}</span></small>` : ''}</div>
-          </div>
-          
-    `;
-  } else {
+              ${item.precio_2 ? `Precio regular: <span class="tachado"> ${item.precio_2}</span>` : ''}
+            </div>
+      </div>`;
+        
+  } 
+  else {
     return `
-      <div class="item-sin-imagen">
-        <h3>${item.nombre}</h3>
-        <p>${item.precio}${item.precio_2 ? ' | ' + item.precio_2 : ''}</p>
-        ${item.nota ? `<small>${item.nota}</small>` : ''}
-      </div>
-    `;
+    <div class="item-sin-imagen detalle col-der">
+          <div class="fila"><h3>${item.nombre}</h3>
+          ${item.ingredientes ? `${item.ingredientes}` : ''}
+          ${item.do ? `<p><b>D.O.:</b> ${item.do}</p>` : ''}
+          ${item.uva ? `<p><b>Uva:</b> ${item.uva}</p>` : ''}
+          ${item.crianza ? `<p><b>Crianza:</b> ${item.crianza}</p>` : ''}
+          ${item.maridaje ? `<p><b>Maridaje:</b> ${item.maridaje}</p>` : ''}
+          </div>
+          <div class="fila fila-doble">
+            <div class="col-50 precio d"></div>
+            <div class="col-50 precio d"><b>
+            B/. <h4>${item.precio}</h4></b>
+          </div>
+          </div>
+          <div class="fila fila-doble">
+            <div class="col-50">
+            ${item.nota ? `${item.nota}` : ''}
+            </div>
+            <div class="col-50 d"> 
+              ${item.precio_2 ? `Precio regular: <span class="tachado"> ${item.precio_2}</span>` : ''}
+            </div>
+          </div>
+        </div>`;
   }
 }
+// nuevo render
+
 
 // ----------------------------
 // Lightbox
