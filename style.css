@@ -3,12 +3,7 @@ p, span {
   margin: 0;
   padding: 0;
   font-weight: normal;
-}
-@font-face {
-  font-family: 'Menutitulo';
-  src: url('Allison-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  /*font-size: 0.85rem;*/
 }
 @font-face {
   font-family: 'TabernaFont';
@@ -40,8 +35,8 @@ body {
 }
 .menutitulo{
   text-align: center;
-  font-family: Pacifico, cursive;
-  font-size: 4rem;
+  font-family: 'Dancin Script', cursive;
+  font-size: 3.5rem;
   color:#d92e2b;
 }
 /* Tabs */
@@ -71,6 +66,7 @@ body {
 #list{
   background-color: #ffffff;
   padding: 10px;
+  font-size: 0.85rem;
 }
 /* Dropdown */
 #categoria-dropdown {
@@ -111,8 +107,9 @@ body {
 
 /* Item sin imagen (lista simple) */
 .item-sin-imagen {
+  display: flex;
+  /*gap: 10px;*/
   margin-top: 10px;
-  margin-bottom: 10px;
   border-top: 1px solid #76272c;
   padding-top: 10px;
 }
@@ -133,7 +130,7 @@ body {
   left:0;
   width:100%;
   height:100%;
-  background: rgba(118,39,44,0.9);
+  background-color: rgb(118, 39, 44, .97);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -146,19 +143,17 @@ body {
   border-radius: 0px;
 }
 h2.subcategoria-titulo {
-  font-family: 'Dancin Script', cursiva;
+  font-family: 'Dancin Script', cursive;
   font-size: 2rem;
   line-height: 2rem;
   padding-top: 15px;
   /*border-bottom: 2px #76272c solid;*/
 }
-.detalle{
-  font-size: 1rem;
-}
 .detalle h3{
   font-size: 1.25rem;
   color: #76272c;
   font-weight: bold;
+  line-height: normal;
 }
 hr.linea4{
   border: none;
@@ -182,6 +177,7 @@ hr.linea4{
 }
 .fila-doble {
   display: flex;
+  width: 100%;
   margin-top: auto;
 }
 .col-50 {
@@ -189,11 +185,12 @@ hr.linea4{
 }
 .precio{
   font-family: "Times New Roman", Sans-Serif;
-  font-size: 1.5rem;
 }
-.rojo{
+h4{
   color: #d92e2b;
   font-weight: bold;
+  font-size: 1.5rem !important;
+  display: inline-block;
 }
 .d {text-align: right;}
 .tachado {
@@ -208,4 +205,4 @@ hr.linea4{
   width: 100%;
   height: 2px;
   background: red;
-  }
+}
