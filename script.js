@@ -217,15 +217,11 @@ function renderItem(item) {
             Botella: <h4>${item.botella}</h4></b>
             </div>
           </div>
-          <div class="fila-doble">
-            <div class="col-50">
-            ${item.nota ? `${item.nota}` : ''}
-            </div>
-            <div class="col-50 d"> 
-              ${item.precio_2 ? `Precio regular: <span class="tachado"> ${item.precio_2}</span>` : ''}</div>
-            </div>
+          <div class="fila d">
+              ${item.precio_2 ? `Precio regular: <span class="tachado"> ${item.precio_2}</span>` : ''}
           </div>
-        </div>`;
+        </div>
+      </div>`;
   } 
   
   else if (bebidasList.includes(sub_categoria)) {
